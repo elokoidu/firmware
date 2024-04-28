@@ -52,7 +52,7 @@ microphone:
 speaker:
   - platform: i2s_audio
     id: echo_speaker
-    i2s_dout_pin: GPIO22
+    i2s_dout_pin: GPIO21
     dac_type: external
     mode: mono
 
@@ -86,6 +86,14 @@ voice_assistant:
         green: 0%
         brightness: 100%
         effect: none
+  on_tts_end:
+    - homeassistant.service:
+        service: media_player.play_media
+        data:
+          entity_id: media_player.josh
+          media_content_id: !lambda 'return x;'
+          media_content_type: music
+          announce: "true"        
   on_end:
     - delay: 100ms
     - wait_until:
