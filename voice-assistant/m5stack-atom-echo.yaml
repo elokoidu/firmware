@@ -5,7 +5,7 @@ esphome:
   name_add_mac_suffix: true
   project:
     name: m5stack.atom-echo-voice-assistant
-    version: "1.0"
+    version: "24.7.4.1"
   min_version: 2024.6.0
 
 esp32:
@@ -18,6 +18,15 @@ api:
 ota:
   - platform: esphome
     id: ota_esphome
+  - platform: http_request
+    id: ota_http_request
+
+update:
+  - platform: http_request
+    id: update_http_request
+    name: Firmware
+    source: https://firmware.esphome.io/voice-assistant/m5stack-atom-echo/manifest.json
+http_request:
 
 dashboard_import:
   package_import_url: github://elokoidu/firmware/voice-assistant/m5stack-atom-echo.yaml@main
@@ -36,6 +45,10 @@ esp32_improv:
   authorizer: none
 
 button:
+  - platform: safe_mode
+    id: button_safe_mode
+    name: Safe Mode Boot
+    
   - platform: factory_reset
     id: factory_reset_btn
     name: Factory reset
@@ -96,7 +109,8 @@ voice_assistant:
           entity_id: media_player.josh
           media_content_id: !lambda 'return x;'
           media_content_type: music
-          announce: "true"        
+          volume_level: 0.30
+          announce: "false"        
     on_end:
     - delay: 100ms
     - wait_until:
